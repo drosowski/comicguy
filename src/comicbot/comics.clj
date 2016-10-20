@@ -3,8 +3,7 @@
   (:require [clojure.zip :as zip])
   (:require [clojure.data.zip.xml :as zip-xml])
   (:require [hickory.core :as html])
-  (:require [hickory.select :as s])
-  (:require [clj-http.client :as http]))
+  (:require [hickory.select :as s]))
 
 (defn extract-link [feed]
   (System/setProperty "http.agent" "curl/7.43.0")
