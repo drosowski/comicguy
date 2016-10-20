@@ -5,7 +5,7 @@
 (def channel (System/getenv "SLACK_CHANNEL"))
 (def strips {:cstrip "Commit Strip", :dilbert "Dilbert"})
 
-(defn has-strip [name]
+(defn has-strip? [name]
   (contains? strips (keyword (clojure.string/replace name #"#" "")))
 )
 
@@ -16,11 +16,10 @@
     (doseq [key (keys strips)]
       (api/send-msg token channel (str "#" (name key) " " (get strips key) "\n"))))
   (handle-msg [self msg] 
-    (if (and (has-strip (:text msg)) (not (= "bot_message" (:subtype msg))))
+    (if (and (has-strip? (:text msg)) (not (= "bot_message" (:subtype msg))))
       (let [link (comics/strip (:text msg))]
-        (println link)
-        (api/send-msg token channel link)
-      nil)))
+        (api/send-msg token channel link))
+      nil))
 )
 
 (defn -main
